@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from Functions import hide_frame, create_chatroom
+from Functions import hide_frame, create_chatroom, username
 
 
 def add_chatroom(parent):
@@ -28,7 +28,7 @@ def add_chatroom(parent):
                                          bd=0, bg="light green", cursor="hand2", relief="solid",
                                          activebackground="light green",
                                          command=lambda: [hide_frame(add_chatroom_frame),
-                                                          create_chatroom(input_field_for_person_to_chat_with.get(),
+                                                          create_chatroom(username, input_field_for_person_to_chat_with.get(),
                                                                           input_field_for_code.get())])
     button_for_creating_room.place(x=275, y=300)
 

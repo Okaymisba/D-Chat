@@ -2,10 +2,13 @@ import json
 import paho.mqtt.client as mqtt
 
 
+with open("info.json", 'r') as read_file:
+    info = json.load(read_file)
+    username = info['username']
+
 def on_connect(client, userdata, flags, rc, properties=None):
     if rc == 0:
         print("Connected to broker")
-        # client.subscribe("server/create")
     else:
         print(f"Failed to connect, return code: {rc}")
 
@@ -48,10 +51,8 @@ def save_user_info(username, password):
     client.publish(topic, json.dumps(user_data))
 
 
-def create_chatroom(recipient_username, chatroom_code):
-    with open("info.json", 'r') as read_file:
-        info = json.load(read_file)
-        username = info['username']
+def create_chatroom(username, recipient_username, chatroom_code):
+
         recipient = recipient_username
         code = chatroom_code
         data = {

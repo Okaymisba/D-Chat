@@ -32,8 +32,9 @@ def on_connect(client, userdata, flags, rc, properties=None):
 
 
 def on_message(client, userdata, msg, properties=None):
-    chat_room_data = json.load(msg.payload.decode())
-    create_chat_room(chat_room_data["recipient"], chat_room_data["topic"])
+    chat_room_data = json.loads(msg.payload.decode("utf-8"))
+    # create_chat_room(chat_room_data["recipient"], chat_room_data["topic"])
+    print(chat_room_data)
 
 
 broker = "4dbbebee01cb4916af953cf932ac5313.s1.eu.hivemq.cloud"
