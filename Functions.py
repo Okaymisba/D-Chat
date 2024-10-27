@@ -47,6 +47,7 @@ def save_user_info(username, password):
 
     client.publish(topic, json.dumps(user_data))
 
+
 def create_chatroom(recipient_username, chatroom_code):
     with open("info.json", 'r') as read_file:
         info = json.load(read_file)
@@ -78,11 +79,13 @@ def create_chatroom(recipient_username, chatroom_code):
         client.publish(topic, json.dumps(data))
         print(f"Data Published: {data}")
 
+
 def on_connect_for_create_chatroom(client, userdata, flags, rc):
     if rc == 0:
         print("Connected to broker")
     else:
         print(f"Failed to connect, return code: {rc}")
+
 
 def on_message_for_create_chatroom(client, userdata, msg):
     print(f"{msg.topic}: {msg.payload.decode()}")

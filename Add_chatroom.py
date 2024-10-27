@@ -26,7 +26,10 @@ def add_chatroom(parent):
 
     button_for_creating_room = tk.Button(add_chatroom_frame, text="Create Room", font=("Helvetica", 12), padx=2, pady=2,
                                          bd=0, bg="light green", cursor="hand2", relief="solid",
-                                         activebackground="light green", command=lambda: [hide_frame(add_chatroom_frame), create_chatroom(input_field_for_person_to_chat_with.get(),input_field_for_code.get())])
+                                         activebackground="light green",
+                                         command=lambda: [hide_frame(add_chatroom_frame),
+                                                          create_chatroom(input_field_for_person_to_chat_with.get(),
+                                                                          input_field_for_code.get())])
     button_for_creating_room.place(x=275, y=300)
 
     test = tk.Button(add_chatroom_frame, text='Back', command=lambda: hide_frame(add_chatroom_frame))
