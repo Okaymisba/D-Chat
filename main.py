@@ -1,3 +1,4 @@
+import json
 import os
 import tkinter as tk
 import paho.mqtt.client as mqtt
@@ -25,15 +26,14 @@ else:
 
 def on_connect(client, userdata, flags, rc, properties=None):
     if rc == 0:
-        print("Connected to broker")
-        client.subscribe("server/create")
+        client.subscribe("application/create")
     else:
         print(f"Failed to connect, return code: {rc}")
 
 
 def on_message(client, userdata, msg, properties=None):
-    chat_room_name = msg.payload.decode()
-    create_chat_room(chat_room_name)
+    chat_room_data = json.load(msg.payload.decode())
+    create_chat_room(chat_room_data["recipient"], chat_room_data["topic"])
 
 
 broker = "4dbbebee01cb4916af953cf932ac5313.s1.eu.hivemq.cloud"

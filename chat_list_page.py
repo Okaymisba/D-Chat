@@ -27,7 +27,7 @@ def chat_list_frame(parent, add_chatroom_frame):
     scrollbar.pack(side="right", fill="y")
 
     # Function to create a chat box dynamically
-    def create_chat_box(chat_name):
+    def create_chat_box(chat_name, topic):
         chat_frame = tk.Frame(scrollable_frame, bg="lightgray", padx=190, pady=5)
         chat_label = tk.Label(chat_frame, text=chat_name, font=("Arial", 12), bg="lightgray")
 

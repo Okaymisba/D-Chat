@@ -5,7 +5,7 @@ import paho.mqtt.client as mqtt
 def on_connect(client, userdata, flags, rc, properties=None):
     if rc == 0:
         print("Connected to broker")
-        client.subscribe("server/create")
+        # client.subscribe("server/create")
     else:
         print(f"Failed to connect, return code: {rc}")
 
@@ -46,4 +46,43 @@ def save_user_info(username, password):
     client.subscribe(topic)
 
     client.publish(topic, json.dumps(user_data))
-    print("Published message")
+
+def create_chatroom(recipient_username, chatroom_code):
+    with open("info.json", 'r') as read_file:
+        info = json.load(read_file)
+        username = info['username']
+        recipient = recipient_username
+        code = chatroom_code
+        data = {
+            "username": username,
+            "recipient": recipient,
+            "code": code
+        }
+
+        broker = "4dbbebee01cb4916af953cf932ac5313.s1.eu.hivemq.cloud"
+        port = 8883
+        topic = "server/create"
+        username = "Reader"
+        password = "Reader123"
+
+        client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1)
+        client.username_pw_set(username, password)
+        client.tls_set()
+        client.on_connect = on_connect_for_create_chatroom
+        client.on_message = on_message_for_create_chatroom
+        client.connect(broker, port)
+        client.loop_start()
+
+        client.subscribe(topic)
+
+        client.publish(topic, json.dumps(data))
+        print(f"Data Published: {data}")
+
+def on_connect_for_create_chatroom(client, userdata, flags, rc):
+    if rc == 0:
+        print("Connected to broker")
+    else:
+        print(f"Failed to connect, return code: {rc}")
+
+def on_message_for_create_chatroom(client, userdata, msg):
+    print(f"{msg.topic}: {msg.payload.decode()}")
