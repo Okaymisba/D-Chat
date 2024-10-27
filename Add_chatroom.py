@@ -14,7 +14,8 @@ def add_chatroom(parent):
                                                         text="Enter the username of the person to chat with", fg="red")
     label_for_username_of_the_person_to_chat.place(x=98, y=130)
 
-    input_field_for_person_to_chat_with = tk.Entry(add_chatroom_frame, width=25, font=("Helvetica", 15), highlightthickness=2)
+    input_field_for_person_to_chat_with = tk.Entry(add_chatroom_frame, width=25, font=("Helvetica", 15),
+                                                   highlightthickness=2)
     input_field_for_person_to_chat_with.place(x=100, y=100)
 
     label_for_code = tk.Label(add_chatroom_frame, text="Code", font=("Helvetica", 15))
