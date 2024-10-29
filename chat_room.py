@@ -1,29 +1,11 @@
 import json
-import os
 import tkinter as tk
 import paho.mqtt.client as mqtt
 
-from Add_chatroom import add_chatroom
-from Functions import show_frame, get_username
-from chat_list_page import chat_list_frame
-from chat_room import chat_room
-from page1 import page1
+from Functions import get_username
 
-root = tk.Tk()
-root.geometry("500x700")
-root.title("D Chat")
-
-chat_room_frame = chat_room(root)
-add_chatroom_frame = add_chatroom(root)
-chat_list_frame, create_chat_room = chat_list_frame(root, add_chatroom_frame)
-page1_frame = page1(root, chat_list_frame)
-
-file = "info.json"
-
-if os.path.exists(file):
-    show_frame(chat_list_frame)
-else:
-    show_frame(page1_frame)
+chat_name = ""
+topic = ""
 
 
 def on_connect(client, userdata, flags, rc, properties=None):
@@ -34,12 +16,14 @@ def on_connect(client, userdata, flags, rc, properties=None):
 
 
 def on_message(client, userdata, msg, properties=None):
-    global chat_room_frame
+    global chat_name
+    global topic
+
     chat_room_data = json.loads(msg.payload.decode("utf-8"))
     application_username = get_username()
     if application_username == chat_room_data["username"]:
-        create_chat_room(root, chat_room_data["recipient"], chat_room_frame)
-    print(chat_room_data)
+        chat_name = chat_room_data["recipient"]
+        topic = chat_room_data["topic"]
 
 
 broker = "4dbbebee01cb4916af953cf932ac5313.s1.eu.hivemq.cloud"
@@ -55,4 +39,9 @@ client.on_message = on_message
 client.connect(broker, port)
 client.loop_start()
 
-root.mainloop()
+
+def chat_room(parent):
+    chat_room = tk.Frame(parent, width=500, height=700)
+    chat_room.grid(row=0, column=0, sticky="nsew")
+
+    return chat_room
