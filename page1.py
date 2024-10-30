@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from Functions import save_user_info, show_frame
+from Functions import save_user_info, show_frame, add_placeholder, add_placeholder_for_password
 
 
 def page1(parent, chat_list_frame):
@@ -12,12 +12,14 @@ def page1(parent, chat_list_frame):
 
     input_field_for_username = tk.Entry(page1, font=("Helvetica", 15), highlightthickness=2)
     input_field_for_username.place(x=200, y=200)
+    add_placeholder(input_field_for_username, "Enter Username here")
 
     enter_password_label = tk.Label(page1, text="Password", font=("Helvetica", 15))
     enter_password_label.place(x=75, y=250)
 
     input_field_for_password = tk.Entry(page1, font=("Helvetica", 15), show="*", highlightthickness=2)
     input_field_for_password.place(x=200, y=250)
+    add_placeholder_for_password(input_field_for_password, "Enter Password here")
 
     submit_button = tk.Button(page1, text="Submit", font=("Helvetica", 10), padx=10, pady=10, relief="raised", width=10,
                               bd=0, bg="light green", fg="black", cursor="hand2", command=lambda: [

@@ -12,6 +12,7 @@ from page1 import page1
 root = tk.Tk()
 root.geometry("500x700")
 root.title("D Chat")
+root.resizable(False, False)
 
 chat_room_frame = chat_room(root)
 add_chatroom_frame = add_chatroom(root)

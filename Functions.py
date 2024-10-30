@@ -1,5 +1,6 @@
 import json
 import paho.mqtt.client as mqtt
+import tkinter as tk
 
 
 def get_username():
@@ -92,3 +93,42 @@ def on_connect_for_create_chatroom(client, userdata, flags, rc):
 
 def on_message_for_create_chatroom(client, userdata, msg):
     print(f"{msg.topic}: {msg.payload.decode()}")
+
+
+def add_placeholder(entry, placeholder):
+    # Function to add placeholder text
+    entry.insert(0, placeholder)
+    entry.config(fg="grey")
+
+    def on_focus_in(event):
+        if entry.get() == placeholder:
+            entry.delete(0, tk.END)
+            entry.config(fg="black")
+
+    def on_focus_out(event):
+        if entry.get() == "":
+            entry.insert(0, placeholder)
+            entry.config(fg="grey")
+
+    # Bind events to entry widget
+    entry.bind("<FocusIn>", on_focus_in)
+    entry.bind("<FocusOut>", on_focus_out)
+
+def add_placeholder_for_password(entry, placeholder):
+    # Function to add placeholder text
+    entry.insert(0, placeholder)
+    entry.config(fg="grey", show="")
+
+    def on_focus_in(event):
+        if entry.get() == placeholder:
+            entry.delete(0, tk.END)
+            entry.config(fg="black", show="*")
+
+    def on_focus_out(event):
+        if entry.get() == "":
+            entry.insert(0, placeholder)
+            entry.config(fg="grey", show="")
+
+    # Bind events to entry widget
+    entry.bind("<FocusIn>", on_focus_in)
+    entry.bind("<FocusOut>", on_focus_out)
