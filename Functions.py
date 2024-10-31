@@ -133,3 +133,21 @@ def add_placeholder_for_password(entry, placeholder):
     # Bind events to entry widget
     entry.bind("<FocusIn>", on_focus_in)
     entry.bind("<FocusOut>", on_focus_out)
+
+
+def add_placeholder_for_text(text_widget, placeholder_text):
+    text_widget.insert("1.0", placeholder_text)
+    text_widget.config(fg="grey")
+
+    def on_focus_in(event):
+        if text_widget.get("1.0", "end-1c") == placeholder_text:
+            text_widget.delete("1.0", "end")
+            text_widget.config(fg="black")
+
+    def on_focus_out(event):
+        if text_widget.get("1.0", "end-1c") == "":
+            text_widget.insert("1.0", placeholder_text)
+            text_widget.config(fg="grey")
+
+    text_widget.bind("<FocusIn>", on_focus_in)
+    text_widget.bind("<FocusOut>", on_focus_out)

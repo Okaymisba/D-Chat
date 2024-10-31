@@ -14,14 +14,14 @@ def add_chatroom(parent):
                                                         text="Enter the username of the person to chat with", fg="red")
     label_for_username_of_the_person_to_chat.place(x=98, y=130)
 
-    input_field_for_person_to_chat_with = tk.Entry(add_chatroom_frame, width=25, font=("Helvetica", 15),
+    input_field_for_person_to_chat_with = tk.Entry(add_chatroom_frame, width=25, font=("Helvetica", 12),
                                                    highlightthickness=2)
     input_field_for_person_to_chat_with.place(x=100, y=100)
 
     label_for_code = tk.Label(add_chatroom_frame, text="Code", font=("Helvetica", 15))
     label_for_code.place(x=100, y=175)
 
-    input_field_for_code = tk.Entry(add_chatroom_frame, width=25, font=("Helvetica", 15), highlightthickness=2)
+    input_field_for_code = tk.Entry(add_chatroom_frame, width=25, font=("Helvetica", 12), highlightthickness=2)
     input_field_for_code.place(x=100, y=205)
 
     label_for_chatroom_code = tk.Label(add_chatroom_frame, text="Enter Unique Code For your chat room", fg="red")
@@ -36,7 +36,9 @@ def add_chatroom(parent):
                                                                           input_field_for_code.get())])
     button_for_creating_room.place(x=275, y=300)
 
-    test = tk.Button(add_chatroom_frame, text='Back', command=lambda: hide_frame(add_chatroom_frame))
-    test.grid(row=0, column=0, sticky='nsew')
+    back_button = tk.Button(add_chatroom_frame, text='Back', font=("Helvetica", 12), padx=2, pady=2,
+                            bd=0, bg="light green", cursor="hand2", relief="solid",
+                            activebackground="light green", command=lambda: hide_frame(add_chatroom_frame))
+    back_button.place(x=200, y=300)
 
     return add_chatroom_frame

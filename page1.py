@@ -10,14 +10,14 @@ def page1(parent, chat_list_frame):
     enter_username_label = tk.Label(page1, text="Username", font=("Helvetica", 15))
     enter_username_label.place(x=75, y=200)
 
-    input_field_for_username = tk.Entry(page1, font=("Helvetica", 15), highlightthickness=2)
+    input_field_for_username = tk.Entry(page1, font=("Helvetica", 12), highlightthickness=2)
     input_field_for_username.place(x=200, y=200)
     add_placeholder(input_field_for_username, "Enter Username here")
 
     enter_password_label = tk.Label(page1, text="Password", font=("Helvetica", 15))
     enter_password_label.place(x=75, y=250)
 
-    input_field_for_password = tk.Entry(page1, font=("Helvetica", 15), show="*", highlightthickness=2)
+    input_field_for_password = tk.Entry(page1, font=("Helvetica", 12), show="*", highlightthickness=2)
     input_field_for_password.place(x=200, y=250)
     add_placeholder_for_password(input_field_for_password, "Enter Password here")
 
