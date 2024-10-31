@@ -114,6 +114,7 @@ def add_placeholder(entry, placeholder):
     entry.bind("<FocusIn>", on_focus_in)
     entry.bind("<FocusOut>", on_focus_out)
 
+
 def add_placeholder_for_password(entry, placeholder):
     # Function to add placeholder text
     entry.insert(0, placeholder)
