@@ -1,6 +1,21 @@
 import tkinter as tk
+from tkinter import messagebox
 
 from Functions import hide_frame, create_chatroom, get_username
+
+
+def validate_inputs_for_chatroom_creation(username, chat_with, code):
+    # Check if fields are empty or contain spaces
+    if not username or ' ' in username:
+        messagebox.showerror("Invalid Input", "Username cannot be empty or contain spaces.")
+        return False
+    if not chat_with or ' ' in chat_with:
+        messagebox.showerror("Invalid Input", "Person to chat with cannot be empty or contain spaces.")
+        return False
+    if not code or ' ' in code:
+        messagebox.showerror("Invalid Input", "Code cannot be empty or contain spaces.")
+        return False
+    return True
 
 
 def add_chatroom(parent):
@@ -27,13 +42,19 @@ def add_chatroom(parent):
     label_for_chatroom_code = tk.Label(add_chatroom_frame, text="Enter Unique Code For your chat room", fg="red")
     label_for_chatroom_code.place(x=100, y=235)
 
+    def handle_create_room():
+        username = get_username()
+        chat_with = input_field_for_person_to_chat_with.get()
+        code = input_field_for_code.get()
+
+        if validate_inputs_for_chatroom_creation(username, chat_with, code):
+            hide_frame(add_chatroom_frame)
+            create_chatroom(username, chat_with, code)
+
     button_for_creating_room = tk.Button(add_chatroom_frame, text="Create Room", font=("Helvetica", 12), padx=2, pady=2,
                                          bd=0, bg="light green", cursor="hand2", relief="solid",
                                          activebackground="light green",
-                                         command=lambda: [hide_frame(add_chatroom_frame),
-                                                          create_chatroom(get_username(),
-                                                                          input_field_for_person_to_chat_with.get(),
-                                                                          input_field_for_code.get())])
+                                         command=handle_create_room)
     button_for_creating_room.place(x=275, y=300)
 
     back_button = tk.Button(add_chatroom_frame, text='Back', font=("Helvetica", 12), padx=2, pady=2,

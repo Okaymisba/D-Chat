@@ -5,7 +5,7 @@ import paho.mqtt.client as mqtt
 from Functions import get_username, add_placeholder, add_placeholder_for_text
 
 chat_name = ""
-topic = "application/chatrooms/test"
+topic = ""
 
 
 def on_connect(client, userdata, flags, rc, properties=None):
@@ -54,22 +54,21 @@ def chat_room(parent):
     scrollbar.place(x=1000, y=600)
     message_box.config(yscrollcommand=scrollbar.set)
 
-    message_display = tk.Text(chat_room, wrap="word", state="disabled", height=32, width=53, font=("Helvetica", 12), bd=0)
+    message_display = tk.Text(chat_room, wrap="word", state="disabled", height=32, width=53, font=("Helvetica", 12),
+                              bd=0)
     message_display.place(x=10, y=10)
-
 
     send_button = tk.Button(chat_room, text="Send", font=("Helvetica", 12), padx=20, pady=17,
                             bd=0, bg="light green", cursor="hand2", relief="solid",
-                            activebackground="light green", command=lambda: send_message(topic, message_box, message_display))
+                            activebackground="light green",
+                            command=lambda: send_message(topic, message_box, message_display))
     send_button.place(x=407, y=602)
-
 
     def add_message(text_message, message):
         text_message.config(state=tk.NORMAL)
-        text_message.insert(tk.END, message+ "\n")
+        text_message.insert(tk.END, message + "\n")
         text_message.config(state=tk.DISABLED)
         text_message.see(tk.END)
-
 
     def send_message(topic, entry_widget, display_widget):
         message = entry_widget.get("1.0", tk.END).strip()
