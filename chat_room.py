@@ -44,6 +44,9 @@ def chat_room(parent, topic, recipient_name):
     chat_room = tk.Frame(parent, width=500, height=700)
     chat_room.grid(row=0, column=0, sticky="nsew")
 
+    label_for_recipient_name = tk.Label(chat_room, text=recipient_name, font=("Helvetica", 15))
+    label_for_recipient_name.place(x=95, y=12)
+
     message_box = tk.Text(chat_room, wrap="word", font=("Helvetica", 12), width=43, height=3)
     message_box.place(x=10, y=600)
     add_placeholder_for_text(message_box, "Type Your Message Here")
@@ -53,13 +56,15 @@ def chat_room(parent, topic, recipient_name):
     scrollbar.place(x=1000, y=600)
     message_box.config(yscrollcommand=scrollbar.set)
 
-    message_display = tk.Text(chat_room, wrap="word", state="disabled", height=32, width=53, font=("Helvetica", 12),
+    message_display = tk.Text(chat_room, wrap="word", state="disabled", height=30, width=53, font=("Helvetica", 12),
                               bd=0)
-    message_display.place(x=10, y=10)
+    message_display.place(x=10, y=54)
 
     chat_rooms[topic] = {"frame": chat_room, "display": message_display}
 
-    back_button = tk.Button(chat_room, text="Back", command=lambda: hide_frame(chat_room))
+    back_button = tk.Button(chat_room, text="Back", font=("Helvetica", 12), padx=15, pady=10,
+                            bd=1, bg="light green", cursor="hand2", relief="solid",
+                            activebackground="light green", command=lambda: hide_frame(chat_room))
     back_button.place(x=0, y=0)
 
     send_button = tk.Button(chat_room, text="Send", font=("Helvetica", 12), padx=20, pady=17,
@@ -68,11 +73,17 @@ def chat_room(parent, topic, recipient_name):
                             command=lambda: send_message(topic, message_box, message_display, recipient_name))
     send_button.place(x=407, y=602)
 
+    def send_message_and_break(event=None):
+        send_message(topic, message_box, message_display, recipient_name)
+        return "break"
+
+    message_box.bind("<Return>", send_message_and_break)
+
     return chat_room
 
 
 def add_message_for_sender(text_widget, message):
-    text_widget.tag_configure("sender", justify="left", background="#e6e6e6", foreground="black", spacing3=5)
+    text_widget.tag_configure("sender", justify="left", foreground="black", spacing3=5)
     text_widget.config(state=tk.NORMAL)
     text_widget.insert(tk.END, "\n " + message + "\n", "sender")
     text_widget.config(state=tk.DISABLED)
@@ -96,6 +107,6 @@ def send_message(topic, entry_widget, display_widget, recipient):
             "to": recipient
         }
         client.publish(topic, json.dumps(json_message))
-        add_message_for_me(display_widget, f"You: {message}")
+        add_message_for_me(display_widget, f" {message} ")
         entry_widget.delete("1.0", tk.END)
         print(topic)
