@@ -151,3 +151,10 @@ def add_placeholder_for_text(text_widget, placeholder_text):
 
     text_widget.bind("<FocusIn>", on_focus_in)
     text_widget.bind("<FocusOut>", on_focus_out)
+
+
+def add_to_room_data(room_data, list_to_add):
+    room_data.append(list_to_add)
+
+    with open("room.txt", "w") as file:
+        file.write(json.dumps(room_data))

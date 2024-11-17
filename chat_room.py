@@ -42,7 +42,6 @@ client.loop_start()
 
 def chat_room(parent, topic, recipient_name):
     chat_room = tk.Frame(parent, width=500, height=700)
-    chat_room.grid(row=0, column=0, sticky="nsew")
 
     label_for_recipient_name = tk.Label(chat_room, text=recipient_name, font=("Helvetica", 15))
     label_for_recipient_name.place(x=95, y=12)
