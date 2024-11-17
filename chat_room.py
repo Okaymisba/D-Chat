@@ -43,8 +43,9 @@ client.loop_start()
 def chat_room(parent, topic, recipient_name):
     chat_room = tk.Frame(parent, width=500, height=700)
 
-    label_for_recipient_name = tk.Label(chat_room, text=recipient_name, font=("Helvetica", 15))
-    label_for_recipient_name.place(x=95, y=12)
+    label_for_recipient_name = tk.Label(chat_room, text=recipient_name, font=("Helvetica", 15), padx=10, pady=9,
+                                        bg="light Green", anchor="w", bd=1, relief="solid")
+    label_for_recipient_name.place(x=85, y=3, width=380)
 
     message_box = tk.Text(chat_room, wrap="word", font=("Helvetica", 12), width=43, height=3)
     message_box.place(x=10, y=600)
@@ -61,7 +62,7 @@ def chat_room(parent, topic, recipient_name):
 
     chat_rooms[topic] = {"frame": chat_room, "display": message_display}
 
-    back_button = tk.Button(chat_room, text="Back", font=("Helvetica", 12), padx=15, pady=10,
+    back_button = tk.Button(chat_room, text="Back", font=("Helvetica", 12), padx=15, pady=9,
                             bd=1, bg="light green", cursor="hand2", relief="solid",
                             activebackground="light green", command=lambda: hide_frame(chat_room))
     back_button.place(x=0, y=0)
