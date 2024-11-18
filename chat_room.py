@@ -85,7 +85,7 @@ def chat_room(parent, topic, recipient_name):
 def add_message_for_sender(text_widget, message):
     text_widget.tag_configure("sender", justify="left", foreground="black", spacing3=5)
     text_widget.config(state=tk.NORMAL)
-    text_widget.insert(tk.END, "\n " + message + "\n", "sender")
+    text_widget.insert(tk.END, message + "\n", "sender")
     text_widget.config(state=tk.DISABLED)
     text_widget.see(tk.END)
 
@@ -93,7 +93,7 @@ def add_message_for_sender(text_widget, message):
 def add_message_for_me(text_message, message):
     text_message.tag_configure("me", justify="right", background="#dcf8c6", foreground="black", spacing3=5)
     text_message.config(state=tk.NORMAL)
-    text_message.insert(tk.END, "\n " + message + "\n ", "me")
+    text_message.insert(tk.END, message + "\n", "me")
     text_message.config(state=tk.DISABLED)
     text_message.see(tk.END)
 
