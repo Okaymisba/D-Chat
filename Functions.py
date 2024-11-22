@@ -30,11 +30,17 @@ def hide_frame(frame):
     frame.grid_forget()
 
 
-def save_user_info(username, password):
+def save_user_info_on_device(username, password):
     with open("info.json", "w") as f:
         user_data = {"username": username,
                      "password": password}
         json.dump(user_data, f)
+
+
+def save_user_info_on_database(username, password, identity):
+    user_data = {"identity": identity,
+                 "username": username,
+                 "password": password}
 
     broker = "4dbbebee01cb4916af953cf932ac5313.s1.eu.hivemq.cloud"
     port = 8883

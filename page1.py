@@ -1,7 +1,52 @@
+import json
+import random
+import threading
+import time
 import tkinter as tk
 from tkinter import messagebox
 
-from Functions import save_user_info, show_frame, add_placeholder, add_placeholder_for_password
+import paho.mqtt.client as mqtt
+
+from Functions import save_user_info_on_database, save_user_info_on_device, show_frame, add_placeholder, \
+    add_placeholder_for_password
+
+
+def on_connect(client, userdata, flags, rc):
+    if rc == 0:
+        print("Connected to broker")
+    else:
+        print(f"Failed to connect, return code: {rc}")
+
+
+def on_message(client, userdata, msg):
+    message_payload = json.loads(msg.payload.decode("utf-8"))
+
+    if message_payload["identity"] == random_digit:
+        print(message_payload)
+        global mqtt_message_data, mqtt_message_received
+        mqtt_message_received = True
+        mqtt_message_data = json.loads(msg.payload.decode("utf-8"))
+
+
+mqtt_message_received = False
+mqtt_message_data = None
+random_digit = random.randint(0, 100000)
+
+broker = "4dbbebee01cb4916af953cf932ac5313.s1.eu.hivemq.cloud"
+port = 8883
+topic = "application/login"
+username = "Reader"
+password = "Reader123"
+
+client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1)
+client.username_pw_set(username, password)
+client.tls_set()
+client.on_connect = on_connect
+client.on_message = on_message
+client.connect(broker, port)
+client.loop_start()
+
+client.subscribe(topic)
 
 
 def validate_inputs_for_login(username, password):
@@ -37,8 +82,32 @@ def page1(parent, chat_list_frame):
         password = input_field_for_password.get()
 
         if validate_inputs_for_login(username, password):
-            save_user_info(input_field_for_username.get(), input_field_for_password.get())
-            show_frame(chat_list_frame)
+            save_user_info_on_database(input_field_for_username.get(), input_field_for_password.get(), random_digit)
+            submit_button.config(state="disabled", text="Submitting...")
+
+            threading.Thread(target=loading_credentials, args=(username, password)).start()
+
+    def loading_credentials(username, password):
+        global mqtt_message_data, mqtt_message_received
+
+        for _ in range(50):
+            if mqtt_message_received:
+                break
+            time.sleep(0.1)
+
+        if mqtt_message_received:
+            if mqtt_message_data and mqtt_message_data.get("user_taken") == "True":
+                messagebox.showerror("Login Error", "Username Already Taken")
+            else:
+                save_user_info_on_device(input_field_for_username.get(), input_field_for_password.get())
+                show_frame(chat_list_frame)
+        else:
+            messagebox.showerror("Error", "Failed to connect, Please try again")
+
+        mqtt_message_received = False
+        mqtt_message_data = None
+
+        submit_button.config(state="normal", text="Submit")
 
     submit_button = tk.Button(page1, text="Submit", font=("Helvetica", 10), padx=10, pady=10, relief="raised", width=10,
                               bd=0, bg="light green", fg="black", cursor="hand2", command=handle_login)
