@@ -1,8 +1,47 @@
 import json
+import threading
+import time
 import tkinter as tk
 from tkinter import messagebox
+import paho.mqtt.client as mqtt
 
 from Functions import hide_frame, create_chatroom, get_username
+
+
+def on_connect_for_application_create(client, userdata, flags, rc):
+    if rc == 0:
+        print("Connected to broker")
+    else:
+        print(f"Failed to connect, return code: {rc}")
+
+
+def on_message_for_application_create(client, userdata, msg):
+    message_payload = json.loads(msg.payload.decode("utf-8"))
+
+    if message_payload["username"] == get_username():
+        global mqtt_data_received, mqtt_data_for_create_chatroom
+        mqtt_data_received = True
+        mqtt_data_for_create_chatroom = message_payload
+
+
+mqtt_data_received = False
+mqtt_data_for_create_chatroom = None
+
+broker = "4dbbebee01cb4916af953cf932ac5313.s1.eu.hivemq.cloud"
+port = 8883
+topic = "application/create"
+username = "Reader"
+password = "Reader123"
+
+client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1)
+client.username_pw_set(username, password)
+client.tls_set()
+client.on_connect = on_connect_for_application_create
+client.on_message = on_message_for_application_create
+client.connect(broker, port)
+client.loop_start()
+
+client.subscribe(topic)
 
 
 def validate_inputs_for_chatroom_creation(username, chat_with, code):
@@ -59,8 +98,32 @@ def add_chatroom(parent):
         code = input_field_for_code.get()
 
         if validate_inputs_for_chatroom_creation(username, chat_with, code):
-            hide_frame(add_chatroom_frame)
+            # hide_frame(add_chatroom_frame)
             create_chatroom(username, chat_with, code)
+            button_for_creating_room.config(state="disabled", text="Creating Room")
+
+            threading.Thread(target=creating_room).start()
+
+    def creating_room():
+        global mqtt_data_received, mqtt_data_for_create_chatroom
+
+        for _ in range(50):
+            if mqtt_data_received:
+                break
+            time.sleep(0.1)
+
+        if mqtt_data_received:
+            if mqtt_data_for_create_chatroom and mqtt_data_for_create_chatroom.get("code_available") == "False":
+                messagebox.showerror("Invalid Input", "This Chatroom code is not available.")
+            else:
+                hide_frame(add_chatroom_frame)
+        else:
+            messagebox.showerror("Error", "Failed to connect, Please try again")
+
+        mqtt_data_received = False
+        mqtt_data_for_create_chatroom = None
+
+        button_for_creating_room.config(state="normal", text="Create Room")
 
     button_for_creating_room = tk.Button(add_chatroom_frame, text="Create Room", font=("Helvetica", 12), padx=2, pady=2,
                                          bd=0, bg="light green", cursor="hand2", relief="solid",

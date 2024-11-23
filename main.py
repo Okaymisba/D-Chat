@@ -45,7 +45,7 @@ def on_connect(client, userdata, flags, rc, properties=None):
 def on_message(client, userdata, msg, properties=None):
     chat_room_data = json.loads(msg.payload.decode("utf-8"))
     application_username = get_username()
-    if application_username == chat_room_data["username"]:
+    if application_username == chat_room_data["username"] and chat_room_data["code_available"] == "True":
         room_information = [chat_room_data["recipient"], chat_room_data["topic"]]
         add_to_room_data(room_data, room_information)
         create_chat_room(root, chat_room_data["recipient"], chat_room_data["topic"])
