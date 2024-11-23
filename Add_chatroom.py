@@ -48,10 +48,12 @@ def validate_inputs_for_chatroom_creation(username, chat_with, code):
     with open("room.txt", "r") as f:
         room_data = json.load(f)
         for data in room_data:
-            print(data[0])
             if chat_with == data[0]:
                 messagebox.showerror("Invalid Username", "A chatroom with this user already exists")
                 return False
+    if chat_with == username:
+        messagebox.showerror("Invalid Username", "You can't chat with yourself")
+        return False
 
     if not username or ' ' in username:
         messagebox.showerror("Invalid Input", "Username cannot be empty or contain spaces.")
