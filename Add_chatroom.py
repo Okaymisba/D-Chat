@@ -1,3 +1,4 @@
+import json
 import tkinter as tk
 from tkinter import messagebox
 
@@ -5,16 +6,26 @@ from Functions import hide_frame, create_chatroom, get_username
 
 
 def validate_inputs_for_chatroom_creation(username, chat_with, code):
-    # Check if fields are empty or contain spaces
+    with open("room.txt", "r") as f:
+        room_data = json.load(f)
+        for data in room_data:
+            print(data[0])
+            if chat_with == data[0]:
+                messagebox.showerror("Invalid Username", "A chatroom with this user already exists")
+                return False
+
     if not username or ' ' in username:
         messagebox.showerror("Invalid Input", "Username cannot be empty or contain spaces.")
         return False
+
     if not chat_with or ' ' in chat_with:
         messagebox.showerror("Invalid Input", "Person to chat with cannot be empty or contain spaces.")
         return False
+
     if not code or ' ' in code:
         messagebox.showerror("Invalid Input", "Code cannot be empty or contain spaces.")
         return False
+
     return True
 
 
