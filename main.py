@@ -7,7 +7,7 @@ import paho.mqtt.client as mqtt
 from Add_chatroom import add_chatroom
 from Functions import show_frame, get_username, add_to_room_data
 from chat_list_page import chat_list_frame
-from page1 import page1
+from page1 import page1, page2
 
 root = tk.Tk()
 root.geometry("500x700")
@@ -17,13 +17,14 @@ root.resizable(False, False)
 add_chatroom_frame = add_chatroom(root)
 chat_list_frame, create_chat_room = chat_list_frame(root, add_chatroom_frame)
 page1_frame = page1(root, chat_list_frame)
+page2_frame = page2(root, chat_list_frame)
 
 file_for_user_credentials = "info.json"
 file_for_room_data = "room.txt"
 room_data = []
 
 if os.path.exists(file_for_user_credentials):
-    show_frame(chat_list_frame)
+    show_frame(page2_frame)
 
     if os.path.exists(file_for_room_data):
         with open(file_for_room_data, 'r') as f:
@@ -32,7 +33,7 @@ if os.path.exists(file_for_user_credentials):
             for data in room_data:
                 create_chat_room(root, data[0], data[1])
 else:
-    show_frame(page1_frame)
+    show_frame(page2_frame)
 
 
 def on_connect(client, userdata, flags, rc, properties=None):

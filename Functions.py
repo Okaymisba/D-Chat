@@ -37,7 +37,31 @@ def save_user_info_on_device(username, password):
         json.dump(user_data, f)
 
 
-def save_user_info_on_database(username, password, identity):
+def save_user_info_on_database_for_signup(username, password, identity):
+    user_data = {"identity": identity,
+                 "username": username,
+                 "password": password}
+
+    broker = "4dbbebee01cb4916af953cf932ac5313.s1.eu.hivemq.cloud"
+    port = 8883
+    topic = "server/signup"
+    username = "Reader"
+    password = "Reader123"
+
+    client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1)
+    client.username_pw_set(username, password)
+    client.tls_set()
+    client.on_connect = on_connect
+    client.on_message = on_message
+    client.connect(broker, port)
+    client.loop_start()
+
+    client.subscribe(topic)
+
+    client.publish(topic, json.dumps(user_data))
+
+
+def authenticate_user_for_login(username, password, identity):
     user_data = {"identity": identity,
                  "username": username,
                  "password": password}
