@@ -117,6 +117,8 @@ def add_chatroom(parent):
         if mqtt_data_received:
             if mqtt_data_for_create_chatroom and mqtt_data_for_create_chatroom.get("code_available") == "False":
                 messagebox.showerror("Invalid Input", "This Chatroom code is not available.")
+            elif mqtt_data_for_create_chatroom and mqtt_data_for_create_chatroom.get("recipient_available") == False:
+                messagebox.showerror("Invalid Input", "The Username of the person doesn't exist.")
             else:
                 hide_frame(add_chatroom_frame)
         else:
