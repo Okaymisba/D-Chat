@@ -24,7 +24,7 @@ file_for_room_data = "room.txt"
 room_data = []
 
 if os.path.exists(file_for_user_credentials):
-    show_frame(page2_frame)
+    show_frame(chat_list_frame)
 
     if os.path.exists(file_for_room_data):
         with open(file_for_room_data, 'r') as f:
